@@ -1,3 +1,4 @@
+
 # Init workflow
 git checkout master
 git reset --hard origin/master
@@ -7,4 +8,4 @@ git checkout -b *issue*
 ...
 git add --all
 git commit -m "[prefix-id]: issue-title"
-git push origin/*branch*
+git push origin *issue*
