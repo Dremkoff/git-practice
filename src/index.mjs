@@ -1,4 +1,4 @@
-const { pool } = require("./database/client");
+import { pool } from "./database/client.mjs";
 
 const main = () => {
   pool.query("SELECT NOW()", (err, res) => {

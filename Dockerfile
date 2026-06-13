@@ -1,7 +1,10 @@
-FROM node:bookworm-slim
+FROM node:alpine
 
 WORKDIR /myapp
 
-COPY . .
+COPY .env package.json package-lock.json ./
+COPY ./src ./src
+
+RUN npm install -ci
 
 CMD ["npm", "run", "start"]
