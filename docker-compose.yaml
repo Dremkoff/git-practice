@@ -1,0 +1,25 @@
+services:
+  node:
+    image: "node:alpine"
+    container_name: node_cont
+    user: "node"
+    working_dir: ./my_app
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "start"]
+  postgres:
+    env_file:
+      - .env
+    image: "postgres:latest"
+    container_name: postgres_cont
+    restart: always
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    volumes:
+      - ./src/database:./prod/db
+    ports:
+      - "${PGPORT}:${PGPORT}"
