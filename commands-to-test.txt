@@ -1,4 +1,0 @@
-git fetch
-git reset --hard HEAD~2
-git status
-git reset --hard origin/dev
