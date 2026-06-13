@@ -5,6 +5,6 @@ WORKDIR /myapp
 COPY .env package.json package-lock.json ./
 COPY ./src ./src
 
-RUN npm install -ci
+RUN npm ci
 
 CMD ["npm", "run", "start"]
