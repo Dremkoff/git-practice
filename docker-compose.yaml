@@ -6,10 +6,18 @@ services:
     build:
       dockerfile: ./Dockerfile
     command: ["npm", "run", "start"]
-    depends_on: ["postgres"]
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGUSER: ${PGUSER}
+      PGHOST: ${PGHOST}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: ${PGPORT}
   postgres:
-    env_file:
-      - .env
     image: "postgres:latest"
     container_name: postgres
     restart: unless-stopped
@@ -17,7 +25,14 @@ services:
       POSTGRES_USER: ${PGUSER}
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
+      POSTGRES_PORT: ${PGPORT}
+      POSTGRES_HOST: ${PGHOST}
     volumes:
-      - ./src/database:/myapp/database
+      - ./src/database:/myapp/db
     ports:
       - "${PGPORT}:${PGPORT}"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${PGUSER}", "-d", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
