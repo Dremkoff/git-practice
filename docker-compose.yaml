@@ -1,25 +1,23 @@
 services:
   node:
     image: "node:alpine"
-    container_name: node_cont
-    user: "node"
-    working_dir: ./my_app
-    environment:
-      - NODE_ENV=production
-    ports:
-      - "3000:3000"
+    container_name: node
+    working_dir: /myapp
+    build:
+      dockerfile: ./Dockerfile
     command: ["npm", "run", "start"]
+    depends_on: ["postgres"]
   postgres:
     env_file:
       - .env
     image: "postgres:latest"
-    container_name: postgres_cont
-    restart: always
+    container_name: postgres
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${PGUSER}
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
     volumes:
-      - ./src/database:./prod/db
+      - ./src/database:/myapp/database
     ports:
       - "${PGPORT}:${PGPORT}"
